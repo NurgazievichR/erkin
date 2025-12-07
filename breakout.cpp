@@ -6,6 +6,8 @@
 #include "paddle.h"
 
 #include "raylib.h"
+#include <ctime>
+
 
 void update()
 {
@@ -42,18 +44,20 @@ void draw()
 
 int main()
 {
+    srand(time(nullptr));
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(1280, 720, "Breakout");
     SetTargetFPS(60);
 
     load_fonts();
     load_textures();
-    load_level();
     load_sounds();
+    load_level();
+
 
     while (!WindowShouldClose()) {
         BeginDrawing();
-
+        game_frame++;
         draw();
         update();
 
@@ -61,8 +65,8 @@ int main()
     }
     CloseWindow();
 
-    unload_sounds();
     unload_level();
+    unload_sounds();
     unload_textures();
     unload_fonts();
 

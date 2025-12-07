@@ -1,6 +1,10 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <cstddef>
+
+extern size_t game_frame;
+
 void derive_graphics_metrics();
 
 void draw_menu();

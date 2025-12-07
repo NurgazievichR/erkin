@@ -3,7 +3,7 @@
 #include <cassert>
 
 sprite load_sprite(
-    const std::string& file_name_prefix,
+        const std::string& file_name_prefix,
     const std::string& file_name_suffix,
     const size_t frame_count,
     const bool loop,

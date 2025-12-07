@@ -56,7 +56,30 @@ void move_ball()
         temp = VOID;
         --current_level_blocks;
     } else if (is_colliding_with_paddle(next_ball_pos, ball_size)) {
-        ball_vel.y = -std::abs(ball_vel.y);
+        Rectangle paddle = { paddle_pos.x, paddle_pos.y, paddle_size.x, paddle_size.y };
+
+        Rectangle prev_ball = {
+            ball_pos.x, ball_pos.y,
+            ball_size.x, ball_size.y
+        };
+
+        Rectangle next_ball = {
+            next_ball_pos.x, next_ball_pos.y,
+            ball_size.x, ball_size.y
+        };
+
+        if (prev_ball.y + prev_ball.height <= paddle.y) {
+            ball_vel.y = -fabs(ball_vel.y);
+        }
+        else if (prev_ball.x + prev_ball.width <= paddle.x) {
+            ball_vel.x = -fabs(ball_vel.x);
+        }
+        else if (prev_ball.x >= paddle.x + paddle.width) {
+            ball_vel.x = fabs(ball_vel.x);
+        }
+
+        ball_pos.x = prev_ball.x;
+        ball_pos.y = prev_ball.y;
     }
 
     ball_pos = next_ball_pos;

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 
+
 struct Text {
     std::string str;
     Vector2 position = { 0.50f, 0.50f };
