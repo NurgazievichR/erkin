@@ -55,6 +55,7 @@ void move_ball()
 
         temp = VOID;
         --current_level_blocks;
+        PlaySound(block_collected_sound);
     } else if (is_colliding_with_paddle(next_ball_pos, ball_size)) {
         Rectangle paddle = { paddle_pos.x, paddle_pos.y, paddle_size.x, paddle_size.y };
 

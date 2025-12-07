@@ -35,6 +35,7 @@ void load_sounds()
     InitAudioDevice();
     win_sound = LoadSound("data/sounds/win.wav");
     lose_sound = LoadSound("data/sounds/lose.wav");
+    block_collected_sound = LoadSound("data/sounds/block_collected.wav");
 }
 
 void unload_sounds()
