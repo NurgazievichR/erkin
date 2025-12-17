@@ -18,6 +18,7 @@ struct level {
 enum game_state {
     menu_state,
     in_game_state,
+    select_menu_state,
     paused_state,
     victory_state
 };

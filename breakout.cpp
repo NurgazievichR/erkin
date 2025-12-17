@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include "level.h"
 #include "paddle.h"
+#include "select_menu.h"
 
 #include "raylib.h"
 #include <ctime>
@@ -32,8 +33,7 @@ void update()
         }
     }else if (game_state == victory_state) {
         if (IsKeyDown(KEY_ENTER)) {
-            game_state = in_game_state;
-            load_level();
+            game_state = select_menu_state;
         }
     }else if (game_state == paused_state) {
         if (IsKeyPressed(KEY_ESCAPE)) {
@@ -41,8 +41,27 @@ void update()
         }
     }else if (game_state == menu_state) {
         if (IsKeyDown(KEY_ENTER)) {
-            game_state = in_game_state;
-            load_level();
+            game_state = select_menu_state;
+        }
+    }else if (game_state == select_menu_state) {
+        if (IsKeyPressed(KEY_UP)) {
+            selected_menu_item =
+                (selected_menu_item == 0)
+                ? MENU_ITEM_COUNT - 1
+                : selected_menu_item - 1;
+        }
+
+        if (IsKeyPressed(KEY_DOWN)) {
+            selected_menu_item =
+                (selected_menu_item + 1) % MENU_ITEM_COUNT;
+        }
+
+        if (IsKeyPressed(KEY_ENTER)) {
+            handle_select_menu_action();
+        }
+
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            game_state = menu_state;
         }
     }
 
@@ -62,6 +81,8 @@ void draw()
         draw_pause_menu();
     } else if (game_state == menu_state) {
         draw_menu();
+    } else if (game_state == select_menu_state) {
+        draw_select_menu();
     }
 }
 
@@ -86,7 +107,6 @@ int main()
 
         EndDrawing();
     }
-
 
     unload_level();
     unload_sounds();

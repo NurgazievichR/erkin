@@ -4,6 +4,7 @@
 #include "ball.h"
 #include "level.h"
 #include "paddle.h"
+#include "select_menu.h"
 
 #include "raylib.h"
 
@@ -258,4 +259,34 @@ void draw_victory_menu()
         &menu_font
     };
     draw_text(victory_subtitle);
+}
+
+void draw_select_menu()
+{
+    ClearBackground(BLACK);
+
+    static const char* menu_items[MENU_ITEM_COUNT] = {
+        "Play",
+        "2 Players",
+        "Settings",
+        "Exit"
+    };
+
+    const float start_y = 0.45f;
+    const float step = 0.07f;
+
+    for (size_t i = 0; i < MENU_ITEM_COUNT; ++i) {
+        Color color = (i == selected_menu_item) ? RED : WHITE;
+
+        Text item = {
+            menu_items[i],
+            { 0.5f, start_y + step * i },
+            48.0f,
+            color,
+            4.0f,
+            &menu_font
+        };
+
+        draw_text(item);
+    }
 }
