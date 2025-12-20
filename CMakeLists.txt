@@ -29,5 +29,7 @@ add_executable(
         paddle.cpp
         select_menu.cpp
         select_menu.h
+        settings.cpp
+        settings.h
 )
 target_link_libraries(breakout PRIVATE raylib glfw)

@@ -5,6 +5,7 @@
 #include "level.h"
 #include "paddle.h"
 #include "select_menu.h"
+#include "settings.h"
 
 #include "raylib.h"
 #include <ctime>
@@ -63,6 +64,54 @@ void update()
         if (IsKeyPressed(KEY_ESCAPE)) {
             game_state = menu_state;
         }
+    }else if (game_state == settings_state) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            game_state = select_menu_state;
+        }
+        if (IsKeyPressed(KEY_DOWN))
+            settings_selected = (settings_selected + 1) % 3;
+
+        if (IsKeyPressed(KEY_UP))
+            settings_selected = (settings_selected + 2) % 3;
+
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            if (settings_selected == 0)
+            {
+                paddle_color_index = (paddle_color_index + 1) % COLOR_OPTION_COUNT;
+            }
+            else if (settings_selected == 1)
+            {
+                ball_color_index = (ball_color_index + 1) % BALL_COLOR_OPTION_COUNT;
+            }
+            else if (settings_selected == 2)
+            {
+                ball_speed_index = (ball_speed_index + 1) % SPEED_OPTION_COUNT;
+                ball_launch_vel_mag = ball_speeds[ball_speed_index];
+            }
+        }
+
+
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            if (settings_selected == 0)
+            {
+                paddle_color_index =
+                    (paddle_color_index + COLOR_OPTION_COUNT - 1) % COLOR_OPTION_COUNT;
+            }
+            else if (settings_selected == 1)
+            {
+                ball_color_index =
+                    (ball_color_index + BALL_COLOR_OPTION_COUNT - 1) % BALL_COLOR_OPTION_COUNT;
+            }
+            else if (settings_selected == 2)
+            {
+                ball_speed_index =
+                    (ball_speed_index + SPEED_OPTION_COUNT - 1) % SPEED_OPTION_COUNT;
+                ball_launch_vel_mag = ball_speeds[ball_speed_index];
+            }
+        }
+
     }
 
 }
@@ -83,6 +132,8 @@ void draw()
         draw_menu();
     } else if (game_state == select_menu_state) {
         draw_select_menu();
+    } else  if (game_state == settings_state) {
+        draw_settings();
     }
 }
 

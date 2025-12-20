@@ -18,6 +18,7 @@ void handle_select_menu_action()
             break;
 
     case MENU_SETTINGS:
+        game_state = settings_state;
             break;
 
     case MENU_EXIT:

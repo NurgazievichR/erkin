@@ -3,7 +3,7 @@
 
 #include "raylib.h"
 
-inline constexpr float ball_launch_vel_mag = 0.10f;
+inline float ball_launch_vel_mag = 0.15f;
 inline constexpr float ball_launch_angle_degrees = 49.6f;
 inline constexpr Vector2 ball_size = { 1.0f, 1.0f };
 

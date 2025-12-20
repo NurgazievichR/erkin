@@ -5,6 +5,7 @@
 #include "level.h"
 #include "paddle.h"
 #include "select_menu.h"
+#include "settings.h"
 
 #include "raylib.h"
 
@@ -12,6 +13,13 @@
 #include <iostream>
 #include <string>
 
+static Color paddle_ui_colors[COLOR_OPTION_COUNT] = {
+    RED, BLUE, GREEN, YELLOW, PURPLE
+};
+
+static Color ball_ui_colors[BALL_COLOR_OPTION_COUNT] = {
+    RED, BLUE, GREEN, WHITE, ORANGE
+};
 
 struct Text {
     std::string str;
@@ -178,15 +186,47 @@ void draw_paddle()
 {
     const float texture_x_pos = shift_to_center.x + paddle_pos.x * cell_size;
     const float texture_y_pos = shift_to_center.y + paddle_pos.y * cell_size;
-    draw_image(paddle_texture, texture_x_pos, texture_y_pos, paddle_size.x * cell_size, paddle_size.y * cell_size);
+
+    Texture2D tex = paddle_red_texture; // default
+
+    switch (paddle_color_index)
+    {
+    case COLOR_RED:    tex = paddle_red_texture; break;
+    case COLOR_BLUE:   tex = paddle_blue_texture; break;
+    case COLOR_GREEN:  tex = paddle_green_texture; break;
+    case COLOR_YELLOW: tex = paddle_yellow_texture; break;
+    case COLOR_PURPLE: tex = paddle_purple_texture; break;
+    }
+
+    draw_image(
+        tex,
+        texture_x_pos,
+        texture_y_pos,
+        paddle_size.x * cell_size,
+        paddle_size.y * cell_size
+    );
 }
+
 
 void draw_ball()
 {
     const float texture_x_pos = shift_to_center.x + ball_pos.x * cell_size;
     const float texture_y_pos = shift_to_center.y + ball_pos.y * cell_size;
-    draw_sprite(ball_sprite, texture_x_pos, texture_y_pos, cell_size);
+
+    sprite spr = ball_red_sprite; // default
+
+    switch (ball_color_index)
+    {
+    case BALL_RED:    spr = ball_red_sprite; break;
+    case BALL_BLUE:   spr = ball_blue_sprite; break;
+    case BALL_GREEN:  spr = ball_green_sprite; break;
+    case BALL_WHITE:  spr = ball_white_sprite; break;
+    case BALL_ORANGE: spr = ball_orange_sprite; break;
+    }
+
+    draw_sprite(spr, texture_x_pos, texture_y_pos, cell_size);
 }
+
 
 void draw_pause_menu()
 {
@@ -289,4 +329,66 @@ void draw_select_menu()
 
         draw_text(item);
     }
+}
+
+void draw_settings()
+{
+    ClearBackground(BLACK);
+
+    const int start_x = 200;
+    const int start_y = 150;
+    const int line_h  = 50;
+
+    DrawText("SETTINGS", start_x, start_y - 70, 40, WHITE);
+
+    // ---------- PADDLE COLOR ----------
+    DrawText(
+        "Paddle Color:",
+        start_x, start_y + 0 * line_h,
+        30, settings_selected == 0 ? YELLOW : WHITE
+    );
+
+    for (int i = 0; i < COLOR_OPTION_COUNT; i++)
+    {
+        Rectangle r = {
+            (float)(start_x + 260 + i * 40),
+            (float)(start_y + 5),
+            30, 30
+        };
+
+        DrawRectangleRec(r, paddle_ui_colors[i]);
+
+        if ((int)paddle_color_index == i)
+            DrawRectangleLinesEx(r, 3, WHITE);
+    }
+
+    // ---------- BALL COLOR ----------
+    DrawText(
+        "Ball Color:",
+        start_x, start_y + 1 * line_h,
+        30, settings_selected == 1 ? YELLOW : WHITE
+    );
+
+    for (int i = 0; i < BALL_COLOR_OPTION_COUNT; i++)
+    {
+        Rectangle r = {
+            (float)(start_x + 260 + i * 40),
+            (float)(start_y + line_h + 5),
+            30, 30
+        };
+
+        DrawRectangleRec(r, ball_ui_colors[i]);
+
+        if ((int)ball_color_index == i)
+            DrawRectangleLinesEx(r, 3, WHITE);
+    }
+
+    // ---------- BALL SPEED ----------
+    DrawText(
+        TextFormat("Ball Speed: %s", speed_names[ball_speed_index]),
+        start_x, start_y + 2 * line_h,
+        30, settings_selected == 2 ? YELLOW : WHITE
+    );
+
+    DrawText("ESC - Back", start_x, start_y + 4 * line_h, 20, GRAY);
 }
